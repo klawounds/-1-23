@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Klawounds</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: url('tokyo.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-top: 10px;
+            font-size: 24px;
+            color: white;
+        }
+        .card {
+            width: 90%;
+            max-width: 340px;
+            height: 220px;
+            background-color: rgb(255, 4, 21);
+            border-radius: 15px;
+            position: relative;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 15px;
+            color: white;
+            text-align: center;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+        }
+        .card-header img {
+            width: 40px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .chip {
+            width: 50px;
+            height: 40px;
+            background: url('chip.png') no-repeat center/cover;
+            margin: 0 auto;
+        }
+        .card-number {
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-family: monospace;
+            user-select: none;
+            pointer-events: none;
+        }
+        .exp {
+            font-size: 14px;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        .card-footer img {
+            width: 60px;
+            height: auto;
+            margin-left: 10px;
+        }
+        /* Блок баланса */
+        .balance-container {
+            margin-top: 10px;
+            font-size: 18px;
+            color: white;
+            text-align: center;
+        }
+        .balance-amount {
+            font-weight: bold;
+        }
+        /* Кнопки */
+        .button {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .button img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+        .crypto-btn {
+            background-color: yellow;
+            bottom: 10px;
+            left: 10px;
+        }
+        .ofic-btn {
+            background-color: blue;
+            bottom: 10px;
+            right: 10px;
+        }
+        /* Затемнение экрана */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+        .overlay.show {
+            opacity: 1;
+        }
+    </style>
+    <script>
+        function generateCardDetails() {
+            let number = Array.from({length: 4}, () => Math.floor(1000 + Math.random() * 9000)).join(" ");
+            let expiryMonth = ("0" + Math.floor(1 + Math.random() * 12)).slice(-2);
+            let expiryYear = 24 + Math.floor(Math.random() * 6);
+            document.getElementById("card-number").textContent = number;
+            document.getElementById("exp-date").textContent = "VALID THRU " + expiryMonth + "/" + expiryYear;
+            document.getElementById("balance-amount").textContent = "10000 ₽";
+        }
+
+        function saveCardData() {
+            let cardNumber = document.getElementById("card-number").textContent;
+            let expDate = document.getElementById("exp-date").textContent;
+            let balance = document.getElementById("balance-amount").textContent;
+
+            localStorage.setItem("cardNumber", cardNumber);
+            localStorage.setItem("expDate", expDate);
+            localStorage.setItem("balance", balance);
+        }
+
+        function showCrypto() {
+            saveCardData();
+            document.getElementById("overlay").classList.add("show");
+
+            setTimeout(() => {
+                window.location.href = 'cripto.html';
+            }, 2000);
+        }
+    </script>
+</head>
+<body onload="generateCardDetails()">
+    <h1>Business KW</h1>
+
+    <div class="card">
+        <div class="card-header">
+            <img src="alfa.png" alt="Alfa Bank">
+        </div>
+        <div class="chip"></div>
+        <div class="card-number" id="card-number"></div>
+        <div class="exp" id="exp-date"></div>
+        <div class="card-footer">
+            <span>CARDHOLDER NAME</span>
+            <img src="visa.png" alt="Visa">
+        </div>
+    </div>
+
+    <!-- Блок баланса -->
+    <div class="balance-container">
+        <span>Баланс: </span>
+        <span id="balance-amount">10000</span> ₽
+    </div>
+
+    <!-- Кнопки внизу слева и справа -->
+    <div class="button crypto-btn" onclick="showCrypto()">
+        <img src="bitcoin.png" alt="Bitcoin">
+        <span>CRYPTO</span>
+    </div>
+    <div class="button ofic-btn">
+        <img src="ofic.png" alt="Ofic">
+        <span>OFIC</span>
+    </div>
+
+    <!-- Затемнение экрана -->
+    <div class="overlay" id="overlay"></div>
+</body>
+</html>

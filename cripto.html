@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Crypto</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background: url('tokyo_night.png') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+        h1 {
+            margin-top: 10px;
+            font-size: 24px;
+            color: white;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            margin-top: 10px;
+        }
+        .button {
+            width: 22%;  /* Уменьшаем ширину кнопки в 2 раза */
+            height: 40px;
+            background-color: yellow;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        /* Можно также увеличить расстояние между кнопками, если нужно */
+        .button-container > .button + .button {
+            margin-left: 10%;  /* Увеличиваем расстояние между кнопками */
+        }
+        /* Карта (скрытая изначально) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay.show {
+            opacity: 0.95;
+            visibility: visible;
+        }
+        .card {
+            width: 90%;
+            max-width: 340px;
+            height: 220px;
+            background-color: rgb(255, 4, 21);
+            border-radius: 15px;
+            position: relative;
+            padding: 15px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            text-align: center;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+        }
+        .card-header img {
+            width: 40px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .chip {
+            width: 50px;
+            height: 40px;
+            background: url('chip.png') no-repeat center/cover;
+            margin: 0 auto;
+        }
+        .card-number {
+            font-size: 18px;
+            letter-spacing: 2px;
+            font-family: monospace;
+            user-select: none;
+            pointer-events: none;
+        }
+        .exp {
+            font-size: 14px;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+        .card-footer img {
+            width: 60px;
+            height: auto;
+            margin-left: 10px;
+        }
+        .balance-container {
+            margin-top: 10px;
+            font-size: 18px;
+            color: white;
+            text-align: center;
+        }
+        .balance-amount {
+            font-weight: bold;
+        }
+        /* Кнопка закрытия */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+    </style>
+    <script>
+        function goBack() {
+            document.getElementById("overlay").style.opacity = "1";
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        function showCard() {
+            document.getElementById("overlay").classList.add("show");
+            // Получаем данные из localStorage
+            document.getElementById("card-number").textContent = localStorage.getItem("cardNumber");
+            document.getElementById("exp-date").textContent = localStorage.getItem("expDate");
+            document.getElementById("balance-amount").textContent = localStorage.getItem("balance") + " ₽";
+        }
+
+        function hideCard() {
+            document.getElementById("overlay").classList.remove("show");
+        }
+
+        window.onload = function () {
+            setTimeout(() => {
+                document.body.style.opacity = "1";
+            }, 500);
+        };
+    </script>
+</head>
+<body>
+    <h1>Business KW</h1>  <!-- Заголовок изменен на "Business KW" -->
+    <div class="button-container">
+        <div class="button" onclick="goBack()">⬅ Back</div>
+        <div class="button" onclick="showCard()">Карта</div>
+    </div>
+
+    <!-- Затемненная карта -->
+    <div class="overlay" id="overlay">
+        <button class="close-btn" onclick="hideCard()">✖</button>
+        <div class="card">
+            <div class="card-header">
+                <img src="alfa.png" alt="Alfa Bank">
+            </div>
+            <div class="chip"></div>
+            <div class="card-number" id="card-number"></div>
+            <div class="exp" id="exp-date"></div>
+            <div class="card-footer">
+                <span>CARDHOLDER NAME</span>
+                <img src="visa.png" alt="Visa">
+            </div>
+        </div>
+        <div class="balance-container">
+            <span>Баланс: </span>
+            <span id="balance-amount">0</span> ₽
+        </div>
+    </div>
+</body>
+</html>
